@@ -9,7 +9,7 @@
     "test": "ng test",
     "serve-lib": "ng build angular-image-viewer --watch",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -b origin/demo-angular-14 -d dist/ngx-image-viewer",
+    "deploy": "gh-pages -b origin/demo-angular-15 -d dist/ngx-image-viewer",
     "lint": "ng lint"
   },
   "dependencies": {
