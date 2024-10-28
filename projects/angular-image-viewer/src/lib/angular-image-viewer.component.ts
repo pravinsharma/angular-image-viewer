@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, Optional, Inject, Input, Output,
+import { Component, OnInit, AfterContentChecked, HostListener, Optional, Inject, Input, Output,
   EventEmitter, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { ImageViewerConfig } from './models/image-viewer-config.model';
 import { CustomImageEvent } from './models/custom-image-event-model';
@@ -28,7 +28,8 @@ const DEFAULT_CONFIG: ImageViewerConfig = {
     next: 'fa fa-chevron-right',
     prev: 'fa fa-chevron-left',
     fullscreen: 'fa fa-arrows-alt',
-  }
+  },
+  isZoomPersistent: false
 };
 
 @Component({
@@ -37,7 +38,7 @@ const DEFAULT_CONFIG: ImageViewerConfig = {
   templateUrl: './angular-image-viewer.component.html',
   styleUrls: ['./angular-image-viewer.component.scss']
 })
-export class AngularImageViewerComponent implements OnInit, OnChanges {
+export class AngularImageViewerComponent implements OnInit, OnChanges, AfterContentChecked {
 
   @ViewChild(CdkDrag, { static: true }) cdkDrag!: CdkDrag;
 
@@ -63,6 +64,9 @@ export class AngularImageViewerComponent implements OnInit, OnChanges {
     'View previous or next image',
     'using < > on the keyboard'
   ];
+
+  @Input()
+  scaleInput = 1;
 
   @Output()
   indexChange: EventEmitter<number> = new EventEmitter();
@@ -91,12 +95,23 @@ export class AngularImageViewerComponent implements OnInit, OnChanges {
     } else if (changes['index']) {
       this.reset();
     }
+
+    if(changes['scaleInput'] && this.config['isZoomPersistent']) {
+      this.scale = changes['scaleInput'].currentValue;
+      this.updateStyle();
+    }
   }
 
   ngOnInit() {
     const merged = this.mergeConfig(DEFAULT_CONFIG, this.moduleConfig);
     this.config = this.mergeConfig(merged, this.config);
     this.triggerConfigBinding();
+  }
+
+  ngAfterContentChecked(): void {
+    let dragElement = document.querySelectorAll('.drag-element')[0];
+    let imgElem = dragElement.querySelector('img');
+    (imgElem as HTMLElement).style.transform = `rotate(${this.rotation}deg) scale(${this.scale})`;
   }
 
   @HostListener('window:keyup.ArrowRight', ['$event'])
@@ -196,10 +211,12 @@ export class AngularImageViewerComponent implements OnInit, OnChanges {
   }
 
   reset() {
-    this.scale = 1;
-    this.rotation = 0;
-    this.updateStyle();
-    this.cdkDrag.reset();
+    if(!this.config.isZoomPersistent) {
+      this.scale = 1;
+      this.rotation = 0;
+      this.updateStyle();
+      this.cdkDrag.reset();
+    }
   }
 
   @HostListener('mouseover')
