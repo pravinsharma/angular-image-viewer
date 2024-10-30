@@ -5,9 +5,11 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build --base-href ./",
+    "build-lib": "ng build angular-image-viewer",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve-lib": "ng build angular-image-viewer --watch",
+    "publish-version": "npm run build-lib && npm publish",
     "predeploy": "npm run build",
     "deploy": "gh-pages -b origin/demo-angular-13 -d dist/ngx-image-viewer"
   },
