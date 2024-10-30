@@ -1,6 +1,6 @@
 {
-  "name": "@clarivate/angular-image-viewer",
-  "version": "5.0.2",
+  "name": "@prvinsharma/angular-image-viewer",
+  "version": "5.0.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/clarivate/angular-image-viewer.git"

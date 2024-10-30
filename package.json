@@ -1,6 +1,6 @@
 {
   "name": "@prvinsharma/angular-image-viewer",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,7 +9,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve-lib": "ng build angular-image-viewer --watch",
-    "publish-version": "npm run build-lib && npm publish",
+    "publish-version": "npm run build-lib && cd dist/angular-image-viewer && npm publish",
     "predeploy": "npm run build",
     "deploy": "gh-pages -b origin/demo-angular-15 -d dist/ngx-image-viewer",
     "lint": "ng lint"
